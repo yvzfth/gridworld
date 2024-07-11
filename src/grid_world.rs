@@ -132,13 +132,16 @@ impl GridWorld {
 
     pub fn run_model(&self) {
         let mut state = State { x: 0, y: 0 };
-
+        let mut steps = 0;
+    
         println!("Loaded Q-table:");
-
+    
         println!("Running the model:");
         while state != (State { x: GRID_SIZE - 1, y: GRID_SIZE - 1 }) {
+            steps += 1;
+            println!("Step {}: ", steps);
             self.print_grid(state);
-
+    
             let mut best_action = ACTIONS[0];
             let mut best_value = f64::NEG_INFINITY;
             for &action in &ACTIONS {
@@ -148,11 +151,12 @@ impl GridWorld {
                     best_action = action;
                 }
             }
-
+    
             state = self.get_next_state(state, best_action);
         }
-
-        println!("Reached goal at: ({}, {})", state.x, state.y);
+    
+        println!("Reached goal in {} steps at: ({}, {})", steps, state.x + 1 , state.y + 1);
         self.print_grid(state); // Print the final state
     }
+    
 }
